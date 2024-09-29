@@ -1,0 +1,15 @@
+/* App.css */
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.cryptoList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
