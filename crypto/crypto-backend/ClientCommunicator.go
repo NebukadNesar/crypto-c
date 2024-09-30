@@ -23,9 +23,15 @@ var (
 func main() {
 	initScrapper()
 
-	//go initRestApi()
+	go initRestApi()
 	go runAutomaticScrapper()
+	go startWebSocketServer()
 
+	// Block main thread to keep servers running
+	select {}
+}
+
+func startWebSocketServer() {
 	http.Handle("/crypto", handleCORS(http.HandlerFunc(handleConnection)))
 	log.Println("WebSocket server started on :9988")
 	if err := http.ListenAndServe(":9988", nil); err != nil {
@@ -188,10 +194,8 @@ func runAutomaticScrapper() {
 	// Initial call to fetch crypto data
 	getCryptoData()
 
-	ticker := time.NewTicker(10 * time.Second)
+	ticker := time.NewTicker(20 * time.Second)
 	defer ticker.Stop()
-
-	log.Println("Starting scraper")
 
 	go func() {
 		for {
