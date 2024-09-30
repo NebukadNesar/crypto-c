@@ -40,3 +40,12 @@ type ClientMessage struct {
 	ID   string `json:"id"`
 	Data any    `json:"data"`
 }
+
+type BlockDataCache interface {
+	History(coin string) ([]HistoricalData, error)
+	Get(coin string) (HistoricalData, error)
+	Put(coin string, data HistoricalData)
+
+	UpdateLatestShapShot(CryptoResponse)
+	GetLatestShapShot() CryptoResponse
+}
