@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"log"
 	"sync"
 	"time"
 )
@@ -52,14 +51,9 @@ func controlCache() {
 	select {}
 }
 
-type BlockDataCache interface {
-	History(coin string) ([]HistoricalData, error)
-	Get(coin string) (HistoricalData, error)
-	Put(coin string, data HistoricalData)
-
-	UpdateLatestShapShot([]HistoricalData)
-	GetLatestShapShot() []HistoricalData
-}
+/*
+ *	Implementation of BlockDataCache
+ */
 
 func (cache *DataCache) History(coin string) ([]HistoricalData, error) {
 	cache.mu.RLock() // normally we do not need but just for play
@@ -85,7 +79,6 @@ func (cache *DataCache) Get(coin string) (HistoricalData, error) {
 func (cache *DataCache) Put(coin string, data HistoricalData) {
 	cache.mu.Lock() // here we need it, for keeping the order
 	defer cache.mu.Unlock()
-	log.Printf("Put %s historical record\n", coin)
 	cache.historicalRecords[coin] = append(cache.historicalRecords[coin], data)
 }
 
